@@ -36,12 +36,6 @@ STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl)
     using namespace stick;
 
     sol::table tbl = _tbl;
-    if (!_namespace.isEmpty())
-    {
-        auto tokens = path::segments(_namespace, '.');
-        for (const String & token : tokens)
-            tbl = tbl[token.cString()] = tbl.get_or(token.cString(), _lua.create_table());
-    }
 
     tbl.new_enum("KeyCode",
                  "A",
