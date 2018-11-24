@@ -9,14 +9,28 @@ namespace lukeLuaSol
 {
 
 STICK_API inline void registerLuke(sol::state_view _lua, const stick::String & _namespace = "");
-STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl, const stick::String & _namespace);
+STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl);
+
+STICK_API inline sol::table ensureNamespaceTable(sol::state_view _lua, sol::table _startTbl, const stick::String & _namespace)
+{
+    using namespace stick;
+
+    sol::table tbl = _startTbl;
+    if (!_namespace.isEmpty())
+    {
+        auto tokens = path::segments(_namespace, '.');
+        for (const String & token : tokens)
+            tbl = tbl[token.cString()] = tbl.get_or(token.cString(), _lua.create_table());
+    }
+    return tbl;
+}
 
 STICK_API inline void registerLuke(sol::state_view _lua, const stick::String & _namespace)
 {
-    registerLuke(_lua, _lua.globals(), _namespace);
+    registerLuke(_lua, ensureNamespaceTable(_lua, _lua.globals(), _namespace));
 }
 
-STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl, const stick::String & _namespace)
+STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl)
 {
     using namespace luke;
     using namespace stick;
