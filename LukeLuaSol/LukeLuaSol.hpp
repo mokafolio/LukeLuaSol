@@ -478,9 +478,9 @@ STICK_API inline void registerLuke(sol::state_view _lua, sol::table _tbl)
         &Window::enableRenderContext,
         "enterFullscreen",
         sol::overload(
-            (Error(Window::*)(FullscreenMode, const Display &)) & Window::enableRenderContext,
-            (Error(Window::*)(const DisplayMode &, const Display &)) & Window::enableRenderContext,
-            (Error(Window::*)(Float32, Float32, const Display &)) & Window::enableRenderContext),
+            (Error(Window::*)(FullscreenMode, const Display &)) & Window::enterFullscreen,
+            (Error(Window::*)(const DisplayMode &, const Display &)) & Window::enterFullscreen,
+            (Error(Window::*)(Float32, Float32, const Display &)) & Window::enterFullscreen),
         "exitFullscreen",
         &Window::exitFullscreen,
         "setVerticalSync",
