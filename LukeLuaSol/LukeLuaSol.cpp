@@ -1,4 +1,6 @@
 #include <LukeLuaSol/LukeLuaSol.hpp>
+#include <StickLuaSol/StickLuaSol.hpp>
+#include <Luke/Luke.hpp>
 #include <Stick/Path.hpp>
 
 namespace lukeLuaSol

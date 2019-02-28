@@ -1,7 +1,7 @@
 #ifndef LUKELUASOL_LUKELUASOL_HPP
 #define LUKELUASOL_LUKELUASOL_HPP
 
-#include <Luke/Luke.hpp>
+#include <Luke/WindowSettings.hpp>
 #include <sol/sol.hpp>
 
 namespace lukeLuaSol
