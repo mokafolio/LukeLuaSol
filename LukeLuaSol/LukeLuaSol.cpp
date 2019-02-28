@@ -447,12 +447,13 @@ void registerLuke(sol::state_view _lua, sol::table _tbl)
     tbl.new_usertype<Window>(
         "Window",
         sol::call_constructor,
-        sol::factories([](const WindowSettings & _settings) {
+        sol::factories([](const WindowSettings & _settings, sol::this_state _s) {
+            sol::state_view L(_s);
             std::unique_ptr<Window> wnd(new Window);
             auto err = wnd->open(_settings);
             if (err)
-                return std::unique_ptr<Window>();
-            return wnd;
+                return sol::make_object(L, err);
+            return sol::make_object(L, std::move(wnd));
         }),
         "close",
         &Window::close,
