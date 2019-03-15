@@ -612,6 +612,7 @@ struct getter<luke::WindowSettings>
     static luke::WindowSettings get(lua_State * L, int index, record & tracking)
     {
         luke::WindowSettings ret;
+        printf("GET WINDOWSETI\n");
 
         sol::table tbl = sol::stack::get<sol::table>(L, lua_absindex(L, index), tracking);
 
