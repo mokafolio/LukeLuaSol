@@ -381,57 +381,57 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
                               "displays",
                               &Display::displays);
 
-    tbl.new_usertype<WindowSettings>("WindowSettings",
-                                     sol::call_constructor,
-                                     sol::constructors<WindowSettings()>(),
-                                     "setResizeable",
-                                     &WindowSettings::setResizeable,
-                                     "setDecorated",
-                                     &WindowSettings::setDecorated,
-                                     "setTitle",
-                                     &WindowSettings::setTitle,
-                                     "setPosition",
-                                     &WindowSettings::setPosition,
-                                     "setSize",
-                                     &WindowSettings::setSize,
-                                     "setDisplay",
-                                     &WindowSettings::setDisplay,
-                                     "setSampleCount",
-                                     &WindowSettings::setSampleCount,
-                                     "setColorPrecision",
-                                     &WindowSettings::setColorPrecision,
-                                     "setAlphaPrecision",
-                                     &WindowSettings::setAlphaPrecision,
-                                     "setStencilPrecision",
-                                     &WindowSettings::setStencilPrecision,
-                                     "setDepthPrecision",
-                                     &WindowSettings::setDepthPrecision,
-                                     "isResizeable",
-                                     &WindowSettings::isResizeable,
-                                     "isDecorated",
-                                     &WindowSettings::isDecorated,
-                                     "display",
-                                     &WindowSettings::display,
-                                     "title",
-                                     &WindowSettings::title,
-                                     "x",
-                                     &WindowSettings::x,
-                                     "y",
-                                     &WindowSettings::y,
-                                     "width",
-                                     &WindowSettings::width,
-                                     "height",
-                                     &WindowSettings::height,
-                                     "sampleCount",
-                                     &WindowSettings::sampleCount,
-                                     "colorPrecision",
-                                     &WindowSettings::colorPrecision,
-                                     "alphaPrecision",
-                                     &WindowSettings::alphaPrecision,
-                                     "depthPrecision",
-                                     &WindowSettings::depthPrecision,
-                                     "stencilPrecision",
-                                     &WindowSettings::stencilPrecision);
+    // tbl.new_usertype<WindowSettings>("WindowSettings",
+    //                                  sol::call_constructor,
+    //                                  sol::constructors<WindowSettings()>(),
+    //                                  "setResizeable",
+    //                                  &WindowSettings::setResizeable,
+    //                                  "setDecorated",
+    //                                  &WindowSettings::setDecorated,
+    //                                  "setTitle",
+    //                                  &WindowSettings::setTitle,
+    //                                  "setPosition",
+    //                                  &WindowSettings::setPosition,
+    //                                  "setSize",
+    //                                  &WindowSettings::setSize,
+    //                                  "setDisplay",
+    //                                  &WindowSettings::setDisplay,
+    //                                  "setSampleCount",
+    //                                  &WindowSettings::setSampleCount,
+    //                                  "setColorPrecision",
+    //                                  &WindowSettings::setColorPrecision,
+    //                                  "setAlphaPrecision",
+    //                                  &WindowSettings::setAlphaPrecision,
+    //                                  "setStencilPrecision",
+    //                                  &WindowSettings::setStencilPrecision,
+    //                                  "setDepthPrecision",
+    //                                  &WindowSettings::setDepthPrecision,
+    //                                  "isResizeable",
+    //                                  &WindowSettings::isResizeable,
+    //                                  "isDecorated",
+    //                                  &WindowSettings::isDecorated,
+    //                                  "display",
+    //                                  &WindowSettings::display,
+    //                                  "title",
+    //                                  &WindowSettings::title,
+    //                                  "x",
+    //                                  &WindowSettings::x,
+    //                                  "y",
+    //                                  &WindowSettings::y,
+    //                                  "width",
+    //                                  &WindowSettings::width,
+    //                                  "height",
+    //                                  &WindowSettings::height,
+    //                                  "sampleCount",
+    //                                  &WindowSettings::sampleCount,
+    //                                  "colorPrecision",
+    //                                  &WindowSettings::colorPrecision,
+    //                                  "alphaPrecision",
+    //                                  &WindowSettings::alphaPrecision,
+    //                                  "depthPrecision",
+    //                                  &WindowSettings::depthPrecision,
+    //                                  "stencilPrecision",
+    //                                  &WindowSettings::stencilPrecision);
 
     tbl.new_usertype<Window>(
         "Window",
@@ -602,7 +602,7 @@ struct checker<luke::WindowSettings>
     template <typename Handler>
     static bool check(lua_State * L, int index, Handler && handler, record & tracking)
     {
-        return sol::stack::check<sol::table>(L, index, handler, tracking);
+        return sol::stack::check<sol::table>(L, index);
     }
 };
 
@@ -612,7 +612,6 @@ struct getter<luke::WindowSettings>
     static luke::WindowSettings get(lua_State * L, int index, record & tracking)
     {
         luke::WindowSettings ret;
-        printf("GET WINDOWSETI\n");
 
         sol::table tbl = sol::stack::get<sol::table>(L, lua_absindex(L, index), tracking);
 
@@ -630,11 +629,11 @@ struct getter<luke::WindowSettings>
 
         sol::optional<sol::table> oPos = tbl["position"];
         if (oPos)
-            ret.setPosition(oPos.value()["x"], oPos.value()["y"]);
+            ret.setPosition(oPos.value()[1], oPos.value()[2]);
 
         sol::optional<sol::table> oSize = tbl["size"];
         if (oSize)
-            ret.setSize(oSize.value()["width"], oSize.value()["height"]);
+            ret.setSize(oSize.value()[1], oSize.value()[2]);
 
         sol::optional<luke::Display &> oDisplay = tbl["display"];
         if (oDisplay)
