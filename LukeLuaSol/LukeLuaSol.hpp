@@ -498,9 +498,9 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
 
     tbl.new_usertype<Window>(
         "Window",
-        sol::call_constructor,
         sol::base_classes,
         sol::bases<EventForwarder>(),
+        sol::call_constructor,
         sol::factories([](const WindowSettings & _settings, sol::this_state _s) {
             sol::state_view L(_s);
             std::unique_ptr<Window> wnd(new Window);
