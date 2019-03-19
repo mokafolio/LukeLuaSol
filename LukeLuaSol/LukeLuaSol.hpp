@@ -586,6 +586,13 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
         "WindowRestoreEvent", sol::base_classes, sol::bases<Event>(), "new", sol::no_constructor);
 
     tbl.set_function("pollEvents", luke::pollEvents);
+    tbl.set_function("setClipboardText", luke::setClipboardText);
+    tbl.set_function("clipboardText", luke::clipboardText);
+    tbl.set_function("hasClipboardText", luke::hasClipboardText);
+    tbl.set_function("isKeyDown", luke::isKeyDown);
+    tbl.set_function("mouseState" luke::mouseState);
+    tbl.set_function("modifiers" luke::modifiers);
+    tbl.set_function("modifier" luke::modifier);
 }
 
 } // namespace lukeLuaSol
