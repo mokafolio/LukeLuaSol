@@ -433,10 +433,74 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
     //                                  "stencilPrecision",
     //                                  &WindowSettings::stencilPrecision);
 
-    //@TODO: Possibly move the event callback stuff into StickLuaSol
+    // we specialize stick::EventForwarder on the lua side for luke input and window events so that
+    // other classes that use those event types can derive from it.
+    // @TODO: possibly add event filter stuff?
+    // @TODO: Possibly move this to StickLuaSol and make another intermediate class for window/input events?
+    tbl.new_usertype<EventForwarder>(
+        "EventForwarder",
+        "new",
+        sol::no_constructor, // we don't allow direct construction for now
+        "setEnabled",
+        &EventForwarder::setEnabled,
+        "isEnabled",
+        &EventForwarder::isEnabled,
+        "addForwarder",
+        &EventForwarder::addForwarder,
+        "removeForwarder",
+        &EventForwarder::removeForwarder,
+        "addMouseMoveCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const MouseMoveEvent & _evt) { _fn(_evt); });
+        },
+        "addMouseUpCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const MouseUpEvent & _evt) { _fn(_evt); });
+        },
+        "addMouseDownCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const MouseDownEvent & _evt) { _fn(_evt); });
+        },
+        "addKeyUpCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const KeyUpEvent & _evt) { _fn(_evt); });
+        },
+        "addKeyDownCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const KeyDownEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowMoveCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowMoveEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowResizeCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowResizeEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowFocusCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowFocusEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowLostFocusCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowLostFocusEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowIconifyCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowIconifyEvent & _evt) { _fn(_evt); });
+        },
+        "addWindowRestoreCallback",
+        [](EventForwarder & _self, sol::function _fn) {
+            return _self.addEventCallback([_fn](const WindowRestoreEvent & _evt) { _fn(_evt); });
+        },
+        "removeEventCallback",
+        &EventForwarder::removeEventCallback);
+
     tbl.new_usertype<Window>(
         "Window",
         sol::call_constructor,
+        sol::base_classes,
+        sol::bases<EventForwarder>(),
         sol::factories([](const WindowSettings & _settings, sol::this_state _s) {
             sol::state_view L(_s);
             std::unique_ptr<Window> wnd(new Window);
@@ -508,53 +572,7 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
         "x",
         &Window::x,
         "y",
-        &Window::y,
-        "addMouseMoveCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const MouseMoveEvent & _evt) { _fn(_evt); });
-        },
-        "addMouseUpCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const MouseUpEvent & _evt) { _fn(_evt); });
-        },
-        "addMouseDownCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const MouseDownEvent & _evt) { _fn(_evt); });
-        },
-        "addKeyUpCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const KeyUpEvent & _evt) { _fn(_evt); });
-        },
-        "addKeyDownCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const KeyDownEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowMoveCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowMoveEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowResizeCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowResizeEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowFocusCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowFocusEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowLostFocusCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowLostFocusEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowIconifyCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowIconifyEvent & _evt) { _fn(_evt); });
-        },
-        "addWindowRestoreCallback",
-        [](Window & _self, sol::function _fn) {
-            return _self.addEventCallback([_fn](const WindowRestoreEvent & _evt) { _fn(_evt); });
-        },
-        "removeEventCallback", 
-        &Window::removeEventCallback);
+        &Window::y);
 
     tbl.new_usertype<WindowMoveEvent>("WindowMoveEvent",
                                       sol::base_classes,
