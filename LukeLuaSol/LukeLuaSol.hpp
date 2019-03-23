@@ -232,6 +232,38 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
                  "KPComma",
                  KeyCode::KPComma);
 
+    tbl.new_enum("KeyModifier",
+                 "None",
+                 KeyModifier::None,
+                 "LeftShift",
+                 KeyModifier::LeftShift,
+                 "RightShift",
+                 KeyModifier::RightShift,
+                 "LeftCommand",
+                 KeyModifier::LeftCommand,
+                 "RightCommand",
+                 KeyModifier::RightCommand,
+                 "LeftControl",
+                 KeyModifier::LeftControl,
+                 "RightControl",
+                 KeyModifier::RightControl,
+                 "LeftAlt",
+                 KeyModifier::LeftAlt,
+                 "RightAlt",
+                 KeyModifier::RightAlt,
+                 "CapsLock",
+                 KeyModifier::CapsLock,
+                 "Numbers",
+                 KeyModifier::Numbers,
+                 "Shift",
+                 KeyModifier::Shift,
+                 "Command",
+                 KeyModifier::Command,
+                 "Control",
+                 KeyModifier::Control,
+                 "Alt",
+                 KeyModifier::Alt);
+
     tbl.new_usertype<Event>("Event",
                             "new",
                             sol::no_constructor,
@@ -436,7 +468,8 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
     // we specialize stick::EventForwarder on the lua side for luke input and window events so that
     // other classes that use those event types can derive from it.
     // @TODO: possibly add event filter stuff?
-    // @TODO: Possibly move this to StickLuaSol and make another intermediate class for window/input events?
+    // @TODO: Possibly move this to StickLuaSol and make another intermediate class for window/input
+    // events?
     tbl.new_usertype<EventForwarder>(
         "EventForwarder",
         "new",
