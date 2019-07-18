@@ -15,6 +15,7 @@ STICK_API void registerLuke(sol::state_view _lua, const stick::String & _namespa
     registerLuke(_lua, stickLuaSol::ensureNamespaceTable(_lua, _lua.globals(), _namespace));
 }
 
+#ifdef LUKELUASOL_IMPLEMENTATION
 STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
 {
     using namespace luke;
@@ -723,6 +724,8 @@ struct getter<luke::WindowSettings>
         return ret;
     }
 };
+
+#endif // LUKELUASOL_IMPLEMENTATION
 
 } // namespace stack
 } // namespace sol
