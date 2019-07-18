@@ -649,7 +649,7 @@ STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
     tbl.set_function("modifiers", luke::modifiers);
     tbl.set_function("modifier", luke::modifier);
 }
-
+#endif // LUKELUASOL_IMPLEMENTATION
 } // namespace lukeLuaSol
 
 /* helpers to allow WindowSettings to be created from a table */
@@ -724,8 +724,6 @@ struct getter<luke::WindowSettings>
         return ret;
     }
 };
-
-#endif // LUKELUASOL_IMPLEMENTATION
 
 } // namespace stack
 } // namespace sol
