@@ -10,12 +10,12 @@ namespace lukeLuaSol
 STICK_API void registerLuke(sol::state_view _lua, const stick::String & _namespace = "");
 STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl);
 
+#ifdef LUKELUASOL_IMPLEMENTATION
 STICK_API void registerLuke(sol::state_view _lua, const stick::String & _namespace)
 {
     registerLuke(_lua, stickLuaSol::ensureNamespaceTable(_lua, _lua.globals(), _namespace));
 }
 
-#ifdef LUKELUASOL_IMPLEMENTATION
 STICK_API void registerLuke(sol::state_view _lua, sol::table _tbl)
 {
     using namespace luke;
